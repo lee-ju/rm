@@ -1,0 +1,132 @@
+# https://brunch.co.kr/@princox/180
+# 위 링크의 자료를 참고하여 제작하였습니다.
+
+###################################
+
+# args는 함수가 몇 개의 인자를 받을지 알 수 없을 때 사용 (argument의 줄임말)
+# Ex. 사람의 이름을 받아서 First name과 Last name을 분리하는 함수를 생성. 이때 사용자가 입력할 수 있는 값은 모름
+def Splitter(*args):
+    for name in args:
+        print('%s %s ' % (name[0], name[1:3]), end=' ')
+    print('\n')
+# [Out] 이 천수  
+
+        이 천수  안 정환  
+
+        이 천수  안 정환  황 선홍  
+
+        이 천수  안 정환  황 선홍  박 지성  
+"""
+# *args는 아무거나 써도 상관 없음
+def Splitter(*Names):
+    for name in Names:
+        print ...
+    print ...
+"""
+Splitter('이천수')
+Splitter('이천수', '안정환')
+Splitter('이천수', '안정환', '황선홍')
+Splitter('이천수', '안정환', '황선홍', '박지성')
+#
+# 이때 함수 내부에서는 입력값들을 튜플로 처리함
+def Splitter(*args):
+    for name in args:
+        print('%s %s ' % (name[0], name[1:3]), end=' ')
+    print('\n')
+    print(type(args), args)
+Splitter('이천수')
+Splitter('이천수', '안정환')
+Splitter('이천수', '안정환', '황선홍')
+Splitter('이천수', '안정환', '황선홍', '박지성')
+# [Out] 이 천수  
+        <class 'tuple'> ('이천수',)
+        이 천수  안 정환  
+
+        <class 'tuple'> ('이천수', '안정환')
+        이 천수  안 정환  황 선홍  
+
+        <class 'tuple'> ('이천수', '안정환', '황선홍') 
+        이 천수  안 정환  황 선홍  박 지성  
+
+        <class 'tuple'> ('이천수', '안정환', '황선홍', '박지성')
+
+###################################
+
+# **kwargs는 keyword argument의 줄임말로 키워드를 제공함
+# 함수에서 "변수명=변수값"으로 받은 부분을 딕셔너리로 인식해서 key(=변수명)와 value(=변수값)로 구분받아 내부에서 처리함
+def now_Time(**kwargs):
+    for Nation, Time in kwargs.items():
+        print('{0} time= {1}'.format(Nation, Time))
+now_Time(Korea='20:30')
+# [Out] Korea time= 20:30
+
+###################################
+
+# *args는 순서도 중요함
+def blog_printer(name, *blogs):
+    print(name)
+    for post in blogs:
+        print(post)
+Name = '내 이름은 블로그 주인'
+Blog1 = '첫 번째 개설한 블로그입니다'
+Blog2 = '성공해서 개설한 두 번째 블로그입니다'
+Blog3 = '추가로 개설한 블로그입니다'
+blog_printer(Name, Blog1, Blog2, Blog3)
+# [Out] 내 이름은 블로그 주인
+        첫 번째 개설한 블로그입니다
+        성공해서 개설한 두 번째 블로그입니다
+        추가로 개설한 블로그입니다
+# 그러나 *args 인자가 함수명의 앞에 오면 에러가 출력됨
+def blog_printer(*blogs, name):
+    # *args 인자인 blogs가 name보다 앞에 옴
+    print(name)
+    for post in blogs:
+        print(post)
+Name = '내 이름은 블로그 주인'
+Blog1 = '첫 번째 개설한 블로그입니다'
+Blog2 = '성공해서 개설한 두 번째 블로그입니다'
+Blog3 = '추가로 개설한 블로그입니다'
+blog_printer(Name, Blog1, Blog2, Blog3)
+# [Out] ---------------------------------------------------------------------------
+        TypeError                                 Traceback (most recent call last)
+        <ipython-input-7-dca6e22bf9ab> in <module>
+                7 Blog2 = '성공해서 개설한 두 번째 블로그입니다'
+                8 Blog3 = '추가로 개설한 블로그입니다'
+           ----> 9 blog_printer(Name, Blog1, Blog2, Blog3)
+
+        TypeError: blog_printer() missing 1 required keyword-only argument: 'name'
+# 즉, *args 는 일반 변수보다 뒤에 위치해야 함!
+
+###################################
+
+# *args와 **kwargs 모두 사용해보기!
+def blog_printer(name, *args, **kwargs):
+    '''
+    name: 블로그 주인의 이름
+    *args: 블로그를 만들 때 설명
+    **kwargs: 해당 블로그의 수익
+    '''
+    print(name)
+    for post in args:
+        print(post)
+    for blog, benefits in kwargs.items():
+        print(blog, '수익은 >>', benefits)
+Name = '이천수'
+Blog1 = '첫 번째 개설한 블로그입니다'
+Blog2 = '성공해서 개설한 두 번째 블로그입니다'
+Blog3 = '추가로 개설한 블로그입니다'
+blog_printer(Name, Blog1, Blog2, Blog3, Income1=10, Income2=30, Income3=50)
+# 단, *args와 **kwargs도 순서가 있음
+# def blog_printer(name, **kwargs, *args): -> Error
+# [Out] 이천수
+        첫 번째 개설한 블로그입니다
+        성공해서 개설한 두 번째 블로그입니다
+        추가로 개설한 블로그입니다
+        Income1 수익은 >> 10
+        Income2 수익은 >> 30
+        Income3 수익은 >> 50
+        
+## 결론 및 요약 ##
+# 함수의 파라미터 순서는 >> 일반 변수 | *args | **kwargs
+# *args: 여러 개의 arguments로 들어올 때, 함수 내부에서는 해당 변수를 Tuple로 처리함
+# **kwargs: 변수명=변수값 으로 입력할 경우, 그것을 각각 Dictionary의 key와 value로 
