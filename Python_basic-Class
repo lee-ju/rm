@@ -1,3 +1,4 @@
+# 점프 투 파이썬, 박응용, 이지스퍼블리싱 을 참고하여 제작하였습니다.
 class HousePark:
     last_name = 'Park'
     def setname(self, name):
