@@ -1,0 +1,158 @@
+class HousePark:
+    last_name = 'Park'
+    def setname(self, name):
+        self.full_name = self.last_name + ' ' + name
+        print(self.full_name)
+    def travel(self, where):
+        print(self.full_name, "go to the ", where)
+#
+pey = HousePark()
+print(pey.last_name)
+pey.setname('Hyunju')
+pey.travel('Seoul')
+#
+class HousePark:
+    last_name = 'Park'
+    def __init__(self, name):
+        self.full_name = self.last_name + " " + name
+    def travel(self, where):
+        print(self.full_name, " go to the ", where)
+    def love(self, other):
+        print(self.full_name, ", loves ", other.full_name)
+class HouseKim(HousePark):
+    # HouseKim 클래스는 HousePark 클래스를 상속받음
+    last_name = 'Kim'
+    def travel(self, where, day):
+        # Method Overriding >> HousePark 클래스의 travel 메서드를 오버라이딩함 (같은 이름에서 기능을 추가할 때!)
+        print(self.full_name, " go to the ", where, " ", str(day))
+#
+pes = HousePark('Hyunju')
+pes.travel('Seoul')
+pek = HouseKim('Juhyun')
+pek.travel('Busan', 3)
+pes.love(pek)
+#
+[Out]
+Park Hyunju  go to the  Seoul
+Kim Juhyun  go to the  Busan   3
+Park Hyunju , loves  Kim Juhyun
+#
+import numpy as np
+class SNN(object):
+    def __init__(self):
+        self.lr = 0.1
+        self._w = 0
+        self._b = 0
+        self._x = 0
+    def set_params(self, w, b):
+        self._w = w
+        self._b = b
+    def for_pass(self, x):
+        self._x = x
+        _pred = self._w * self._x + self._b
+        return _pred
+    def back_pass(self, err):
+        m = len(self._x)
+        self._w_grad = self.lr * np.sum(err * self._x) / m
+        self._b_grad = self.lr * np.sum(err * 1) / m
+    def update_grad(self):
+        self.set_params(self._w + self._w_grad, self._b + self._b_grad)
+ #
+from tqdm import tqdm
+from sklearn import datasets
+diabetes = datasets.load_diabetes()
+print(diabetes.data.shape, diabetes.target.shape)
+
+n1 = SNN()
+n1.set_params(5, 1)
+for i in tqdm(range(30000)):
+    y_hat = n1.for_pass(diabetes.data[:, 2])
+    error = diabetes.target - y_hat
+    n1.back_pass(error)
+    n1.update_grad()
+print('Final W=', n1._w)
+print('Final b=', n1._b)
+#
+import random
+class SNN(object):
+    def __init__(self):
+        self._w = random.uniform(0, 1)
+        self._b = random.uniform(0, 1)
+        self._x = 0
+        self._lr = 0.1
+    def for_pass(self, x):
+        self._x = x
+        _y_hat = self._w * self._x + self._b
+        return _y_hat
+    def back_pass(self, err):
+        m = len(self._x)
+        self._w_grad = self._lr * np.sum(err * self._x) / m
+        self._b_grad = self._lr * np.sum(err * 1) / m
+    def update_grad(self):
+        self._w = self._w + self._w_grad
+        self._b = self._b + self._b_grad
+#
+from tqdm import tqdm
+from sklearn import datasets
+diabetes = datasets.load_diabetes()
+print(diabetes.data.shape, diabetes.target.shape)
+
+n1 = SNN()
+for i in tqdm(range(30000)):
+    y_hat = n1.for_pass(diabetes.data[:, 2])
+    error = diabetes.target - y_hat
+    n1.back_pass(error)
+    n1.update_grad()
+print('Final W=', n1._w)
+print('Final b=', n1._b)
+#
+# https://datascienceschool.net/01%20python/02.12%20%ED%8C%8C%EC%9D%B4%EC%8D%AC%20%EA%B0%9D%EC%B2%B4%EC%A7%80%ED%96%A5%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D.html
+class Character(object):
+    def __init__(self):
+        self.life = 1000
+    def attacked(self):
+        self.life -= 10
+        print('under attacked! life=', self.life)
+    def attack(self):
+        print('Attack!')
+class Warrior(Character):
+    # Character 클래스를 상속받음
+    def __init__(self):
+        # Warrior가 상속받은 클래스를 초기화함
+        super(Warrior, self).__init__()
+        self.strength = 15
+        self.intelligence = 5
+    def attack(self):
+        # Character 클래스의 attack 메서드를 오버라이딩함
+        print('Warrior skill!')
+class Wizard(Character):
+    # Character 클래스를 상속받음
+    def __init__(self):
+        # Wizard가 상속받은 클래스를 초기화함
+        super(Wizard, self).__init__()
+        self.strength = 5
+        self.intelligence = 15
+    def attacked(self):
+        # Character 클래스의 attacked 메서드를 오버라이딩함
+        self.life -= 30
+        print('Wizard under attacked! life=', self.life)
+    def attack(self):
+        # Character 클래스의 attack 메서드를 오버라이딩함
+        print('Wizard skill!')
+#
+a = Warrior()
+b = Wizard()
+a.attacked()
+b.attacked()
+print(a.life, a.strength, a.intelligence)
+a.attack()
+print(b.life, b.strength, b.intelligence)
+b.attack()
+#
+[Out]
+under attacked! life= 990
+Wizard under attacked! life= 970
+990 15 5
+Warrior skill!
+970 5 15
+Wizard skill!
