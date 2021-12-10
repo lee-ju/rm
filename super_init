@@ -1,0 +1,47 @@
+# https://velog.io/@gwkoo/%ED%81%B4%EB%9E%98%EC%8A%A4-%EC%83%81%EC%86%8D-%EB%B0%8F-super-%ED%95%A8%EC%88%98%EC%9D%98-%EC%97%AD%ED%95%A0
+
+# 클래스로 작성된 딥러닝 코드를 보면 주로 아래의 4가지 코드가 자주 등장함을 알 수 있다.
+super().__init__()
+super(ClassName, self).__init__()
+super().__init__(**kwargs)
+super(ClassName, self).__init__(**kwargs)
+
+class Parent:
+    def __init__(self, p1, p2):
+    	'''super()를 사용하지 않으면 overriding 됩니다.'''
+        self.p1 = p1
+        self.p2 = p2
+        
+class Child(Parent):
+    def __init__(self, c1, **kwargs):
+        super(Child, self).__init__(**kwargs)
+        self.c1 = c1
+        self.c2 = "This is Child's c2"
+        self.c3 = "This is Child's c3"
+
+child = Child(p1="This is Parent's p1", 
+	      p2="This is Parent's p1", 
+              c1="This is Child's c1")
+
+print(child.p1)
+print(child.p2)
+print(child.c1)
+print(child.c2)
+print(child.c3)
+
+#위 코드의 실행 결과는 아래와 같습니다.
+This is Parent's p1
+This is Parent's p1
+This is Child's c1
+This is Child's c2
+This is Child's c3
+
+# 정상 실행되는 이유?
+## 코드가 정상적으로 실행되는 이유를 추적해보면 아래와 같습니다.
+### 1) Child 클래스는 Parent 클래스를 상속 받는다. 이는 Child 클래스내에 Parent 클래스의 메소드를 모두 가져오기 하는 것이라고 생각하면 쉽습니다.
+### 2) 그러나 Parent 클래스와 Child 클래스는 모두 __init__()이라는 메소드를 가지고 있다. 따라서 super()를 사용하지 않으면, 부모 클래스의 __init__()는 자식 클래스의 __init__()에 의해 overriding(덮어쓰기) 됩니다.
+### 3) Child 클래스의 __init__() 메소드에 Parent 클래스의 __init__() 메소드의 변수를 가지고 오고 싶다!!
+### 4) Child 클래스의 __init__() 메소드내에서 super().__init__()을 입력하면 Parent 클래스의 __init__()에 있는 클래스 변수들을 가지고 올 수 있습니다.
+### 5) 이를 볼때 super()는 상속받은 부모 클래스를 의미한다고 볼 수 있습니다.
+### 6) 그러나 Parent 클래스의 _init__() 메소드에 argument가 있다면 Child 클래스는 _init__()에 **kwargs를 반드시 입력해 주어야 합니다. 또한 super().__init__()에도 반드시 **kwargs를 인자로 전달해 주어야 합니다.
+### 7) 6)을 하지 않으면 __init__() missing required positional arguments 에러가 발생합니다.
