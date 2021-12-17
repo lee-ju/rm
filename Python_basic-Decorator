@@ -1,0 +1,37 @@
+#https://velog.io/@hwang-eunji/python-decorator-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0
+# 데코레이터 이해하기
+# 어떤 시스템이 유료계정을 사용하는 사용자에게만 서비스A를 제공한다고 하자
+# 즉, 유료서비스는 실행 전 유료계정 여부를 체크함
+# 이때, 유료서비스를 계속 만들면 유료계정 여부를 체크하는 코드가 중첩되어 사용됨
+# 1. 유료계정 여부를 체크하는 함수 (is_paid_user)를 만들고,
+# 2. 유료서비스 실행 전 is_paid_user를 데코레이터로 사용하자
+
+is_paid_user(user_id):
+    '''
+    사용자의 id인 user_id를 input으로 받음
+    유료계정 DB인 paid_user에 user_id가 있는지 체크
+    있으면, paid에 True를 저장하고 없으면 False를 저장
+    '''
+    if user_id in paid_user:
+        paid = True
+    else:
+        paid = False
+    return paid
+    
+# **데코레이터를 사용하지 않는 경우
+def paid_service1(user_id, ...):
+    # 유료계정 여부를 체크하는 코드
+    # 유료서비스1 실행
+    
+def paid_service2(user_id, ...):
+    # 유료계정 여부를 체크하는 코드
+    # 유료서비스2 실행
+
+# **데코레이터를 사용하는 경우
+@is_paid_user
+def paid_service1(...):
+    # 유료서비스1 실행
+
+@is_paid_user
+def paid_service2(...):
+    # 유료서비스2 실행
