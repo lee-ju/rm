@@ -130,3 +130,16 @@ blog_printer(Name, Blog1, Blog2, Blog3, Income1=10, Income2=30, Income3=50)
 # 함수의 파라미터 순서는 >> 일반 변수 | *args | **kwargs
 # *args: 여러 개의 arguments로 들어올 때, 함수 내부에서는 해당 변수를 Tuple로 처리함
 # **kwargs: 변수명=변수값 으로 입력할 경우, 그것을 각각 Dictionary의 key와 value로 
+
+# +추가: https://engineer-mole.tistory.com/181
+# '*'를 애스터리스크라고 함
+def add(x, y)
+    return x+y
+lst = [1, 2]
+add(lst[0], lst[1])
+add(*lst) # 애스터리스크를 붙이면 기존 리스트나 튜플 형식의 인수를 언패키징하여 고정 인수에 적용함
+
+dct = {'x': 1, 'y': 2}
+def bar(x, y):
+    return x+y
+bar(**dct) # dct라는 딕셔너리의 values를 더한 결과인 3이 출력됨
