@@ -35,3 +35,8 @@ def paid_service1(...):
 @is_paid_user
 def paid_service2(...):
     # 유료서비스2 실행
+
+# **데코레이터를 실행했을 때의 내부 과정
+paid_service1 # 데코레이터를 갖는 함수 (유료서비스1) 실행
+decorated_fun = is_paid_user(paid_service1)
+decorated_fun()
