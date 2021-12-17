@@ -6,37 +6,34 @@
 # 1. 유료계정 여부를 체크하는 함수 (is_paid_user)를 만들고,
 # 2. 유료서비스 실행 전 is_paid_user를 데코레이터로 사용하자
 
-is_paid_user(user_id):
+is_paid_user(paid_service):
     '''
-    사용자의 id인 user_id를 input으로 받음
-    유료계정 DB인 paid_user에 user_id가 있는지 체크
-    있으면, paid에 True를 저장하고 없으면 False를 저장
+    사용자 id (user_id)가 유료계정 DB인 paid_user에 있는지 체크
+    있으면, 유료서비스 실행
     '''
-    if user_id in paid_user:
-        paid = True
-    else:
-        paid = False
-    return paid
+    def wrapper():
+        if user_id in paid_user:
+            paid_service()
+        else:
+            pass
+    return wrapper
     
 # **데코레이터를 사용하지 않는 경우
 def paid_service1(user_id, ...):
     # 유료계정 여부를 체크하는 코드
-    # 유료서비스1 실행
+    # 유료서비스1 관련 코드
     
 def paid_service2(user_id, ...):
     # 유료계정 여부를 체크하는 코드
-    # 유료서비스2 실행
+    # 유료서비스2 관련 코드
 
 # **데코레이터를 사용하는 경우
 @is_paid_user
 def paid_service1(...):
-    # 유료서비스1 실행
-
-@is_paid_user
-def paid_service2(...):
-    # 유료서비스2 실행
+    # 유료서비스1 관련 코드
 
 # **데코레이터를 실행했을 때의 내부 과정
 paid_service1 # 데코레이터를 갖는 함수 (유료서비스1) 실행
 decorated_fun = is_paid_user(paid_service1)
 decorated_fun()
+# 즉, 데코레이터를 실행할 때 인자로 해당 함수를 전달
