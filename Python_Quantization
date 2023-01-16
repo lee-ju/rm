@@ -1,0 +1,15 @@
+# https://kosen.kr/info/kosen/REPORT_0000000002194
+# https://doi.org/10.22800/kisti.kosenexpert.2022.968
+import numpy as np
+QBIT = 8 #  양자화  비트 
+Qrange = 2**QBIT # 256: 양자화  범위 
+
+data = [v/10 for v in range(-3, 4)]
+threshold = np.min(data) - np.max(data) #  입력값의  범위 
+step = threshold / Qrange # 양자화  resolution 
+Data_q = np.round(data / step) #  양자화(quantization) 
+Scale = Qrange / threshold # 양자화  스케일  factor 
+Data_qn = Data_q / Scale # de-quantization 
+
+print(Data_q)
+print(Data_qn)
