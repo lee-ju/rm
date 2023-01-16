@@ -1,0 +1,12 @@
+```Python
+import os
+os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID" 
+os.environ['CUDA_VISIBLE_DEVICES'] = '0'
+
+# GPU 확인
+import torch
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+print(device)
+
+torch.cuda.is_available()
+```
